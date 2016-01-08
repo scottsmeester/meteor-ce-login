@@ -1,21 +1,25 @@
 // start the application by using the following command
 // meteor run --settings server/settings.json
-Contacts = {}
 
 if (Meteor.isClient) {
-  Meteor.subscribe("contacts");
 
+  Meteor.call("getNewData", function(error, results) {
 
-  Meteor.call("ceContacts", function(error, results) {
-      console.log(results); //results.data should be a JSON object
+      // var myCount = 0;
+      // myList.forEach(function(myCount){
+      //   myCount++;
+      // })
+      var myLists = results;
+      console.log('results', results)
   });
+
+  Template.body.helpers({
+    listStats: myLists
+  });
+
 }
 
 if (Meteor.isServer) {
-
-  Meteor.publish("contacts", function () {
-    return Contacts.find();
-  });
 
   Meteor.startup(function () {
 
@@ -32,32 +36,43 @@ if (Meteor.isServer) {
 
 
   Meteor.methods({
-      ceContacts: function () {
-        // var config = Accounts.loginServiceConfiguration.findOne({service: 'cloudelements'});
-        // console.log('config', config);
-        // if (!config) {
-        //     throw new ServiceConfiguration.ConfigError("Service not configured");
-        //   // this.unblock();
-        //   // return Meteor.http.call("GET", "https://console.cloud-elements.com:443/elements/api-v2/hubs/finance/customers");
-        // }
+
+      getNewData: function () {
         var responseContent;
 
-        try {
-            // Request an access token
-            responseContent = HTTP.get(
-                "https://console.cloud-elements.com/elements/api-v2/hubs/crm/accounts", {
-                    headers: {
-                        Authorization:  'User ' + Meteor.settings.secret_stuff.CE_USER_SECRET + ', Organization ' + Meteor.settings.secret_stuff.CE_ORG_SECRET + ', Element GyiNJi1HQFNZFAy/bTJA6/Psd9wbXXgNXit6qvloVxc'
-                    }
-                }).content;
+        var myLists = [
+                  {'name': 'unresponsive', 'id': '1234'},
+                  {'name': 'declined', 'id': '1233'},
+                  {'name': 'completed', 'id': '1232'},
+                  {'name': 'inProcess', 'id': '1231'},
+                  {'name': 'beingScheduled', 'id': '1230'},
+                  {'name': 'newSignup', 'id': '1229'},
+                  {'name': 'signupEvent', 'id': '1088'},
+                  {'name': 'questionForm', 'id': '1087'}
+                ];
+        var responseContent = [];
+        for (var i = 0; i < myLists.length; i++) {
+          console.log(myLists[i].id);
+          try {
+              // Request an access token
+              responseContent[i] = HTTP.get(
+                  "https://console.cloud-elements.com:443/elements/api-v2/hubs/marketing/lists/" + myLists[i].id + "/contacts", {
+                      headers: {
+                          Authorization:  'User ' + Meteor.settings.secret_stuff.CE_USER_SECRET + ', Organization ' + Meteor.settings.secret_stuff.CE_ORG_SECRET + ', Element +DXBgHkVLTGhTfWNS3DrFjJheV5tVg9TidL7wjzIzRg='
+                      }
+                  });
 
-        } catch (err) {
-            throw _.extend(new Error("Failed to complete OAuth handshake with stripe. " + err.message),
-                {response: err.response});
+          } catch (err) {
+              throw _.extend(new Error("Failed to complete OAuth handshake with Cloud Elements. " + err.message),
+                  {response: err.response});
+          }
+          myLists[i].count = responseContent[i].data.length
+        // console.log('responseContent', responseContent[i].data.length, 'this', );
         }
-
-        console.log('responseContent', responseContent)
+        console.log('myLists', myLists)
+        return myLists;
     }
+
   });
 }
 

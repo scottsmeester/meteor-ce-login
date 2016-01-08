@@ -3,12 +3,12 @@
 </head>
 
 <body>
-  <h1>Welcome to Your Contacts!</h1>
-  {{>contacts}}
+  <h1>Bulk Loader Dashboard</h1>
+  {{>lists}}
   
 </body>
 
-<template name="contacts">
-  <!-- <button>Click Me</button> -->
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="lists">
+  <button>Get Current Data</button>
+  <p>Total count of people in Bulk Loader lists: {{totalPeople}}</p>
 </template>

@@ -3,12 +3,43 @@
 </head>
 
 <body>
+<div class="container-fluid">
   <h1>Bulk Loader Dashboard</h1>
-  {{>lists}}
+
+  <p>
+    <button type="button" class="getData btn btn-primary">Get Current Data</button>
+  </p>
+
+  <table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Stage Name</th>
+      <th>Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each listSpecs}}
+      {{> lists}}
+    {{/each}}
+  </tbody>
+  </table>
   
+    <div class="row">
+      <div class="col-md-4">
+      </div>
+    </div>
+</div>
 </body>
 
 <template name="lists">
-  <button>Get Current Data</button>
-  <p>Total count of people in Bulk Loader lists: {{totalPeople}}</p>
+  <tr>
+    <td>{{name}}</td>
+    <td>{{count}}</td>
+  </tr>
+  <!-- <ul class="list-group">
+    <li class="list-group-item">
+      <span class="badge"></span>
+      
+    </li>
+  </ul>  -->
 </template>

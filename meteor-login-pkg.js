@@ -29,15 +29,10 @@ if (Meteor.isClient) {
         else {
           Session.set('downloading', false);
           Session.set('myLists', results);
-          console.log('results', results)
         }
       });
     }
   });
-
-  console.log('listData', listData);
-  var chartData = [];
-  var listData = Session.get('myLists');
 
   Template.body.helpers({
     listSpecs: function() {
@@ -45,31 +40,73 @@ if (Meteor.isClient) {
     },
     downloading: function() {
       return Session.get('downloading');
-    },
-    createChart: function() {
-
-       Meteor.defer(function() {
-        for (var i = 0; i < listData.length; i++) {
-          console.log('hello');
-
-          chartData[i] = {
-               y: listData[i].count,
-               name: listData[i].name
-            }
-        }
-          console.log('chartData2', chartData)
-        Highcharts.chart('chart', {
-          title: {
-              text: 'Bulk Loader Breakdown'
-          },
-          series: [{
-            type: 'pie',
-            data: chartData
-          }]
-        });
-       });
     }
+    // ,
+    // stageBreakdown: function() {
+
+    //    Meteor.defer(function() {
+    //     for (var i = 0; i < listData.length; i++) {
+    //       console.log('hello');
+
+    //       chartData[i] = {
+    //            y: listData[i].count,
+    //            name: listData[i].name
+    //         }
+    //     }
+    //       console.log('chartData2', chartData)
+    //     Highcharts.chart('stageBreakdown', {
+    //       title: {
+    //           text: 'Bulk Loader Breakdown'
+    //       },
+    //       series: [{
+    //         type: 'pie',
+    //         data: chartData
+    //       }]
+    //     });
+    //    });
+    // }
   });
+
+  Template.lists.rendered = function() {
+    Tracker.autorun(function(){
+      buildStageBreakdown();
+    });
+  }
+
+  var stageBreakdownChart;
+
+  function buildStageBreakdown() {
+
+    var chartData = [];
+
+    console.log('Session', Session.get('myLists')[0].id)
+
+    if (Session.get('myLists')[0].count !== undefined) {
+      chartData = Session.get('myLists')
+      for (var i = 0; i < chartData.length; i++) {
+        chartData[i] = {
+             y: chartData[i].count,
+             name: chartData[i].name
+          }
+      }
+      console.log('chartData', chartData);
+    }
+
+    stageBreakdownChart = $('#stageBreakdown').highcharts({
+        title: {
+            text: 'Bulk Loader Breakdown'
+        },
+        series: [{
+          type: 'pie',
+          data: chartData
+        }]
+    })
+
+    // var listData = Session.get('myLists');
+
+
+
+  }
 }
 
 if (Meteor.isServer) {

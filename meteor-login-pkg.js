@@ -15,17 +15,19 @@ var hsListArray = [
 if (Meteor.isClient) {
 
   Session.setDefault('myLists', hsListArray);
-
-  console.log('myLists', Session.get('myLists'));
+  Session.setDefault('downloading', false);
 
    Template.body.events({
     "click .getData": function (event) {
+
+      Session.set('downloading', true);
 
       Meteor.call("getNewData", function(error, results) {
         if (error) {
           // handle error
         }
         else {
+          Session.set('downloading', false);
           Session.set('myLists', results);
           console.log('results', results)
         }
@@ -34,12 +36,41 @@ if (Meteor.isClient) {
 
   });
 
+  console.log('listData', listData);
+  var chartData = [];
+  var listData = Session.get('myLists');
+
   Template.body.helpers({
     listSpecs: function() {
       return Session.get('myLists');
+    },
+    downloading: function() {
+      return Session.get('downloading');
+    },
+    createChart: function() {
+
+       Meteor.defer(function() {
+        for (var i = 0; i < listData.length; i++) {
+          console.log('hello');
+
+          chartData[i] = {
+               y: listData[i].count,
+               name: listData[i].name
+            }
+        }
+          console.log('chartData2', chartData)
+        Highcharts.chart('chart', {
+          title: {
+              text: 'Bulk Loader Breakdown'
+          },
+          series: [{
+            type: 'pie',
+            data: chartData
+          }]
+        });
+       });
     }
   });
-
 }
 
 if (Meteor.isServer) {
@@ -82,9 +113,7 @@ if (Meteor.isServer) {
                   {response: err.response});
           }
           myList[i].count = responseContent[i].data.length
-        // console.log('responseContent', responseContent[i].data.length, 'this', );
         }
-        console.log('myList', myList)
         return myList;
     }
 

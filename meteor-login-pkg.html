@@ -6,8 +6,11 @@
 <div class="container-fluid">
   <h1>Bulk Loader Dashboard</h1>
 
+  {{#if downloading true}}
+    {{> spinner}}
+  {{else}}
   <p>
-    <button type="button" class="getData btn btn-primary">Get Current Data</button>
+    <button type="button" class="getData btn btn-primary">Get Today's Data</button>
   </p>
 
   <table class="table table-striped">
@@ -24,10 +27,9 @@
   </tbody>
   </table>
   
-    <div class="row">
-      <div class="col-md-4">
-      </div>
-    </div>
+  <div id="chart">{{createChart}}</div>
+  {{/if}}
+  
 </div>
 </body>
 
@@ -36,10 +38,4 @@
     <td>{{name}}</td>
     <td>{{count}}</td>
   </tr>
-  <!-- <ul class="list-group">
-    <li class="list-group-item">
-      <span class="badge"></span>
-      
-    </li>
-  </ul>  -->
 </template>

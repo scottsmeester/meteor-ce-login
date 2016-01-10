@@ -21,3 +21,5 @@ accounts-ui
 scottsmeester:accounts-cloudelements
 http
 twbs:bootstrap
+sacha:spin
+highcharts:highcharts-meteor

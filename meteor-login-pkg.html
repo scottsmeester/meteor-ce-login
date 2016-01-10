@@ -9,27 +9,26 @@
   {{#if downloading true}}
     {{> spinner}}
   {{else}}
-  <p>
-    <button type="button" class="getData btn btn-primary">Get Today's Data</button>
-  </p>
-
-  <table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Stage Name</th>
-      <th>Count</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each listSpecs}}
-      {{> lists}}
-    {{/each}}
-  </tbody>
-  </table>
+    <p>
+      <button type="button" class="getData btn btn-primary">Get Today's Data</button>
+    </p>
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Stage Name</th>
+        <th>Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each listSpecs}}
+        {{> lists}}
+      {{/each}}
+    </tbody>
+    </table>
   
-  <div id="chart">{{createChart}}</div>
+    <div id="chart">{{createChart}}</div>
   {{/if}}
-  
+
 </div>
 </body>
 

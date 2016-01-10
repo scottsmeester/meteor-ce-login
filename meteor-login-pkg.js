@@ -33,7 +33,6 @@ if (Meteor.isClient) {
         }
       });
     }
-
   });
 
   console.log('listData', listData);

@@ -41,30 +41,6 @@ if (Meteor.isClient) {
     downloading: function() {
       return Session.get('downloading');
     }
-    // ,
-    // stageBreakdown: function() {
-
-    //    Meteor.defer(function() {
-    //     for (var i = 0; i < listData.length; i++) {
-    //       console.log('hello');
-
-    //       chartData[i] = {
-    //            y: listData[i].count,
-    //            name: listData[i].name
-    //         }
-    //     }
-    //       console.log('chartData2', chartData)
-    //     Highcharts.chart('stageBreakdown', {
-    //       title: {
-    //           text: 'Bulk Loader Breakdown'
-    //       },
-    //       series: [{
-    //         type: 'pie',
-    //         data: chartData
-    //       }]
-    //     });
-    //    });
-    // }
   });
 
   Template.lists.rendered = function() {
@@ -101,11 +77,6 @@ if (Meteor.isClient) {
           data: chartData
         }]
     })
-
-    // var listData = Session.get('myLists');
-
-
-
   }
 }
 

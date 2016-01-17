@@ -1,4 +1,4 @@
-###h4 Run the application by typing:
+###Run the application by typing:
 `meteor run --settings server/settings.json`
 
 ###Purpose

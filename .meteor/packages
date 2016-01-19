@@ -23,3 +23,5 @@ http
 twbs:bootstrap
 sacha:spin
 highcharts:highcharts-meteor
+kadira:flow-router
+kadira:blaze-layout

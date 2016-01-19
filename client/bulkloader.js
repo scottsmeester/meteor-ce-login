@@ -30,7 +30,6 @@ Template.body.events({
   }
 });
 
-
 Template.body.helpers({
  listSpecs: function() {
    return Session.get('myLists');
